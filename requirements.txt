@@ -5,3 +5,8 @@ sentence-transformers
 openai
 python-dotenv
 pymupdf
+pytesseract 
+pillow
+langchain-text-splitters
+tiktoken
+youtube-transcript-api

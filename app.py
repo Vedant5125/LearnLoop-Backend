@@ -1,50 +1,27 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from dotenv import load_dotenv
-import os
-from openai import OpenAI
+from rag.generator import generate_response 
 
-load_dotenv()
-
-client = OpenAI(
-    api_key=os.getenv("GEMINI_API_KEY"),
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-)
-
-app = FastAPI()
+app = FastAPI(title="LearnLoop RAG API")
 
 @app.get("/")
-def root():
-    return {"message": "Backend Running"}
-
-ECON_CONTENT = """
-Demand refers to the quantity of a good that consumers are willing
-and able to purchase at different prices during a given period.
-
-Law of Demand: As price increases, quantity demanded falls,
-assuming other factors remain constant.
-"""
+def home():
+    return {"message": "LearnLoop API is running"}
 
 class Query(BaseModel):
     question: str
 
 @app.post("/ask")
-def ask(query: Query):
-    prompt = f"""
-You are an Economics teacher.
-Use ONLY the content below to answer.
-
-Content:{ECON_CONTENT}
-
-Question:{query.question}
-
-Explain clearly in simple terms.
-"""
-    
-    response = client.chat.completions.create(
-        model="gemini-2.5-flash",
-        messages=[{"role":"user", "content": prompt}]
-    )
-
-    return {"answer": response.choices[0].message.content}
-
+async def ask_question(query: Query):
+    try:
+        user_text = query.question
+        
+        result = generate_response(user_text)
+        
+        return {
+            "status": "success",
+            "question": user_text,
+            "answer": result
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

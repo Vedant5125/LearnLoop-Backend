@@ -24,28 +24,3 @@ def load_youtube_transcript(url: str) -> str:
     
     full_text = " ".join([entry.text for entry in fetched])
     return full_text
-
-
-if __name__ == "__main__":
-    urls = [
-        "https://youtu.be/Ec19ljjvlCI?list=TLGG6f3IQWMbfUswNDExMjAyNQ",
-        "https://www.youtube.com/watch?v=Z_S0VA4jKes&t=3s"
-    ]
-
-    all_text = []
-
-    for url in urls:
-        text = load_youtube_transcript(url)
-        all_text.append(text)
-
-    combined_content = "\n\n--- NEW TOPIC ---\n\n".join(all_text)
-
-    chunks = chunk_text(combined_content)
-
-    print(f"Total chunks created: {len(chunks)}")
-    print("/n************************************************/n")
-    for i, chunk in enumerate(chunks):
-        print(f"Chunk {i+1}:\n{chunk}\n")
-    print("/n************************************************/n")
-    print("\nDone")
-

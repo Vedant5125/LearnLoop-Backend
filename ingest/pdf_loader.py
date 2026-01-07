@@ -4,7 +4,7 @@ from PIL import Image
 import io
 import os
 from dotenv import load_dotenv
-from chunker import chunk_text
+from ingest.chunker import chunk_text
 
 load_dotenv()
 
@@ -28,13 +28,3 @@ def load_pdf(pdf_path: str) -> str:
 
     return full_text
 
-
-if __name__ == "__main__":
-    content = load_pdf("economics.pdf")
-    chunks = chunk_text(content)
-    print(f"Total chunks created: {len(chunks)}")
-    print("/n************************************************/n")
-    for i, chunk in enumerate(chunks):
-        print(f"Chunk {i+1}:\n{chunk}\n")
-    print("/n************************************************/n")
-    print("\nDone")

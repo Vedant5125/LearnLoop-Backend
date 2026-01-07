@@ -21,6 +21,8 @@ site_build
 venv
 docs.zip
 archive.zip
+chroma_db
+chroma_db/
 
 # vim temporary files
 *~

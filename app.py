@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from rag.generator import generate_response 
+from rag.podcast import generate_podcast
 
 app = FastAPI(title="LearnLoop RAG API")
 
@@ -23,5 +24,17 @@ async def ask_question(query: Query):
             "question": user_text,
             "answer": result
         }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/podcast")
+async def process_script(query: Query):
+    try:
+        podcast_result = generate_podcast(query.question)
+        return {
+            "status": "success",
+            "data": podcast_result
+            }
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -27,9 +27,3 @@ def get_all_chunks():
 
     return all_chunks
 
-if __name__ == "__main__":
-    chunks = get_all_chunks()
-    print(f"Total chunks created: {len(chunks)}")
-    print("/n************************************************/n")
-    print(chunks)
-
